@@ -154,3 +154,24 @@ func TestStateIsEveryListAsJSONLines(t *testing.T) {
 		t.Fatalf("show %s", out)
 	}
 }
+
+// recording.delete removes a saved recording for good, so its catalog row is
+// marked destructive (agents ask before running it); no other verb is.
+func TestCatalogMarksOnlyRecordingDeleteDestructive(t *testing.T) {
+	tool, _ := testTool(t)
+	var doc ocli.CatalogDoc
+	if err := json.Unmarshal([]byte(runTool(t, tool, "catalog")), &doc); err != nil {
+		t.Fatal(err)
+	}
+	var got []string
+	for _, n := range doc.Nouns {
+		for _, v := range n.Verbs {
+			if v.Destructive {
+				got = append(got, n.Name+"."+v.Name)
+			}
+		}
+	}
+	if !slices.Equal(got, []string{"recording.delete"}) {
+		t.Fatalf("destructive verbs %q", got)
+	}
+}

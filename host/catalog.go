@@ -520,7 +520,8 @@ func (t *Tool) shell() *ocli.Shell {
 				return ochazuke.Failed(err)
 			}
 			return ochazuke.Done(map[string]any{"id": id, "deleted": path})
-		}, "delete one recording (a ring entry or a saved one): --target recording/REF; {id, deleted}")
+		}, "delete one recording (a ring entry or a saved one): --target recording/REF; {id, deleted}").
+		Destructive()
 	r.Define("fixture").
 		Verb("list", func(c ochazuke.Ctx) ochazuke.Result { return fixturesOf(arg(c, "app")) },
 			"the fixtures of the host's apps, of one app when named: {id: fixture/APP/NAME, label, data: {app, name, summary, default}}").Rows("fixture").
