@@ -350,7 +350,7 @@ func (h *host) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 	}
 	_, cmd := h.idx.Update(msg)
-	if h.starting != nil && h.idx.Runtime.Focus != h.startFocus && h.idx.Runtime.Settings().Bool("play.follow-focus") {
+	if h.starting != nil && h.idx.Runtime.FocusID() != h.startFocus && h.idx.Runtime.Settings().Bool("play.follow-focus") {
 		h.cancelStart()
 	}
 	if h.idx.Runtime.Quit {

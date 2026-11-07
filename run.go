@@ -171,11 +171,11 @@ func Check(ss *Session, e Expect) []string {
 	r := ss.R
 	var bad []string
 	failf := func(format string, a ...any) { bad = append(bad, fmt.Sprintf(format, a...)) }
-	if e.Focus != "" && r.Focus != e.Focus {
-		failf("focus %q, want %q", r.Focus, e.Focus)
+	if e.Focus != "" && r.FocusID() != e.Focus {
+		failf("focus %q, want %q", r.FocusID(), e.Focus)
 	}
-	if e.Mode != "" && r.Mode.Name != e.Mode {
-		failf("mode %q, want %q", r.Mode.Name, e.Mode)
+	if e.Mode != "" && r.CurrentMode().Name != e.Mode {
+		failf("mode %q, want %q", r.CurrentMode().Name, e.Mode)
 	}
 	if e.Quit != nil && r.Quit != *e.Quit {
 		failf("quit %v, want %v", r.Quit, *e.Quit)
@@ -190,7 +190,7 @@ func Check(ss *Session, e Expect) []string {
 		failf("pane shift %d, want %d", r.PaneShift(r.Page), *e.Shift)
 	}
 	if e.Visible != nil {
-		lbl := label(r.Instances[r.Focus])
+		lbl := label(r.Instances[r.FocusID()])
 		if on := strings.Contains(screen, lbl); on != *e.Visible {
 			failf("focused %q on screen = %v, want %v", lbl, on, *e.Visible)
 		}

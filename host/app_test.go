@@ -105,7 +105,7 @@ func buildRows(env story.Env) (story.Built, error) {
 	}
 	return story.Built{Model: m, Snapshot: func() (story.Snapshot, error) {
 		s := seed
-		s.Focus = r.Focus
+		s.Focus = r.FocusID()
 		data, err := json.Marshal(s)
 		return story.Snapshot{Seed: data}, err
 	}}, nil

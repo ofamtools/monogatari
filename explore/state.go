@@ -82,8 +82,8 @@ func stateOf(ss *session) State {
 		return State{End: "quit"}
 	}
 	r := ss.m.Runtime
-	st := State{Page: r.Page, Mode: modeKey(r.Mode)}
-	for _, id := range r.Ancestry(r.Focus) {
+	st := State{Page: r.Page, Mode: modeKey(r.CurrentMode())}
+	for _, id := range r.Ancestry(r.FocusID()) {
 		inst := r.Instances[id]
 		if row, list := rowOf(r, id); row {
 			st.Focus = append(st.Focus, "row:"+inst.Noun+"@"+list)
@@ -110,9 +110,9 @@ func stateOf(ss *session) State {
 			st.Guards = append(st.Guards, "!"+name)
 		}
 	}
-	st.Rows = rowsHash(r.ListBindings(r.Focus))
+	st.Rows = rowsHash(r.ListBindings(r.FocusID()))
 	st.List = listClass(r)
-	if in := r.Input(r.Focus); in != nil {
+	if in := r.Input(r.FocusID()); in != nil {
 		st.Input = inputClass(in)
 	}
 	if regs := r.Registers(); regs != nil {
@@ -133,7 +133,7 @@ func guardHolds(r *ochazuke.Runtime, name string) (holds bool) {
 			holds = false
 		}
 	}()
-	holds, _ = r.GuardHolds(name, r.Focus)
+	holds, _ = r.GuardHolds(name, r.FocusID())
 	return holds
 }
 
@@ -177,10 +177,10 @@ func rowOf(r *ochazuke.Runtime, id string) (bool, string) {
 
 // focusedList is the list the focus is on (the list or one of its rows).
 func focusedList(r *ochazuke.Runtime) (*ochazuke.List, string) {
-	if l := r.List(r.Focus); l != nil {
-		return l, r.Focus
+	if l := r.List(r.FocusID()); l != nil {
+		return l, r.FocusID()
 	}
-	if row, list := rowOf(r, r.Focus); row {
+	if row, list := rowOf(r, r.FocusID()); row {
 		return r.List(list), list
 	}
 	return nil, ""

@@ -90,15 +90,15 @@ func TestPlayStepsAndChecksTheScript(t *testing.T) {
 		t.Fatal("space did not pause at the opening frame")
 	}
 	keytest.Press(h, "l")
-	if p.at != 1 || p.d.S.R.Focus != "a2" {
-		t.Fatalf("after one step at %d, focus %q", p.at, p.d.S.R.Focus)
+	if p.at != 1 || p.d.S.R.FocusID() != "a2" {
+		t.Fatalf("after one step at %d, focus %q", p.at, p.d.S.R.FocusID())
 	}
 	if !strings.Contains(screen(h), "▸ j") || !strings.Contains(screen(h), "list.move") {
 		t.Fatalf("the played row is not marked with what it ran:\n%s", screen(h))
 	}
 	keytest.Press(h, "l")
-	if p.at != 2 || p.d.S.R.Focus != "b1" {
-		t.Fatalf("after two steps at %d, focus %q", p.at, p.d.S.R.Focus)
+	if p.at != 2 || p.d.S.R.FocusID() != "b1" {
+		t.Fatalf("after two steps at %d, focus %q", p.at, p.d.S.R.FocusID())
 	}
 	rows := p.rows()
 	if last := rows[len(rows)-1]; !last.Final || last.State != rowPassed {
@@ -108,12 +108,12 @@ func TestPlayStepsAndChecksTheScript(t *testing.T) {
 		t.Fatalf("no pass mark:\n%s", screen(h))
 	}
 	keytest.Press(h, "h")
-	if p.at != 1 || p.d.S.R.Focus != "a2" {
-		t.Fatalf("back: at %d, focus %q", p.at, p.d.S.R.Focus)
+	if p.at != 1 || p.d.S.R.FocusID() != "a2" {
+		t.Fatalf("back: at %d, focus %q", p.at, p.d.S.R.FocusID())
 	}
 	keytest.Press(h, "r")
-	if p.at != 0 || p.auto || p.d.S.R.Focus != "a1" {
-		t.Fatalf("restart: at %d, focus %q", p.at, p.d.S.R.Focus)
+	if p.at != 0 || p.auto || p.d.S.R.FocusID() != "a1" {
+		t.Fatalf("restart: at %d, focus %q", p.at, p.d.S.R.FocusID())
 	}
 	keytest.Press(h, "f")
 	if !p.done() || p.results[0] == nil {
@@ -190,8 +190,8 @@ func TestPlayRecordsLiveKeysFromAStep(t *testing.T) {
 	// Keys go to the story and fill the script.
 	keytest.Press(h, "j")
 	keytest.Press(h, "j")
-	if p.at != 3 || len(p.script()) != 3 || p.script()[2].Key != "j" || p.d.S.R.Focus != "b2" {
-		t.Fatalf("recorded at %d, script %d, focus %q", p.at, len(p.script()), p.d.S.R.Focus)
+	if p.at != 3 || len(p.script()) != 3 || p.script()[2].Key != "j" || p.d.S.R.FocusID() != "b2" {
+		t.Fatalf("recorded at %d, script %d, focus %q", p.at, len(p.script()), p.d.S.R.FocusID())
 	}
 	if p.script()[1].T == 0 {
 		t.Fatal("a recorded event carries no time")
@@ -205,8 +205,8 @@ func TestPlayRecordsLiveKeysFromAStep(t *testing.T) {
 		t.Fatal("ctrl+g did not stop the recording")
 	}
 	keytest.Press(h, "h")
-	if p.at != 2 || p.d.S.R.Focus != "b1" {
-		t.Fatalf("back after recording: at %d, focus %q", p.at, p.d.S.R.Focus)
+	if p.at != 2 || p.d.S.R.FocusID() != "b1" {
+		t.Fatalf("back after recording: at %d, focus %q", p.at, p.d.S.R.FocusID())
 	}
 	keytest.Press(h, "s")
 	if h.idx.Runtime.TopModal() == "" {
@@ -244,31 +244,31 @@ func TestPlayTutorialResetsNavigatesAndShowsCaptions(t *testing.T) {
 		t.Fatal("tutorial did not start autoplay")
 	}
 	h.Update(playTick{p.gen}) // setup j
-	if p.d.S.R.Focus != "a2" {
-		t.Fatal(p.d.S.R.Focus)
+	if p.d.S.R.FocusID() != "a2" {
+		t.Fatal(p.d.S.R.FocusID())
 	}
 	h.Update(playTick{p.gen}) // reset, show action 1 before its key
 	if p.action != 0 || p.at != 0 || !strings.Contains(screen(h), "Press j") {
 		t.Fatal("action caption missing")
 	}
 	h.Update(playTick{p.gen}) // action j
-	if p.d.S.R.Focus != "a3" {
-		t.Fatal(p.d.S.R.Focus)
+	if p.d.S.R.FocusID() != "a3" {
+		t.Fatal(p.d.S.R.FocusID())
 	}
 	h.Update(playTick{p.gen}) // reset for action 2
-	if p.action != 1 || p.at != 0 || p.d.S.R.Focus != "a2" {
+	if p.action != 1 || p.at != 0 || p.d.S.R.FocusID() != "a2" {
 		t.Fatalf("no reset: %+v", p)
 	}
 	h.Update(playTick{p.gen}) // k, from reset a2
-	if p.d.S.R.Focus != "a1" || !p.done() || p.auto || len(p.failures()) > 0 {
+	if p.d.S.R.FocusID() != "a1" || !p.done() || p.auto || len(p.failures()) > 0 {
 		t.Fatal("second action failed")
 	}
 	keytest.Press(h, "[")
-	if p.action != 0 || p.auto || p.at != 0 || p.d.S.R.Focus != "a2" {
+	if p.action != 0 || p.auto || p.at != 0 || p.d.S.R.FocusID() != "a2" {
 		t.Fatal("previous action did not reset")
 	}
 	keytest.Press(h, "]")
-	if p.action != 1 || p.auto || p.at != 0 || p.d.S.R.Focus != "a2" {
+	if p.action != 1 || p.auto || p.at != 0 || p.d.S.R.FocusID() != "a2" {
 		t.Fatal("next action did not reset")
 	}
 	if _, err := h.idx.Runtime.Settings().SetSession("play.captions", false); err != nil {
@@ -278,11 +278,11 @@ func TestPlayTutorialResetsNavigatesAndShowsCaptions(t *testing.T) {
 		t.Fatal("captions cannot be disabled")
 	}
 	keytest.Press(h, "r")
-	if p.action != -1 || p.at != 0 || p.d.S.R.Focus != "a1" {
+	if p.action != -1 || p.at != 0 || p.d.S.R.FocusID() != "a1" {
 		t.Fatal("restart did not return to opening")
 	}
 	keytest.Press(h, "f")
-	if !p.done() || p.d.S.R.Focus != "a1" {
+	if !p.done() || p.d.S.R.FocusID() != "a1" {
 		t.Fatal("end did not play all independent actions")
 	}
 }
@@ -313,7 +313,7 @@ func TestPlayTutorialRecordingKeepsSetupAndRelativeChecks(t *testing.T) {
 	if err := p.back(); err != nil {
 		t.Fatal(err)
 	}
-	if p.d.S.R.Focus != "a2" {
+	if p.d.S.R.FocusID() != "a2" {
 		t.Fatal("recording lost its setup")
 	}
 }
@@ -362,7 +362,7 @@ func TestPlayTutorialTreeKeepsSetupParentsAndResetCursor(t *testing.T) {
 	for range 2 {
 		h.Update(playTick{p.gen})
 	}
-	if _, cur = p.tutorialRows(); cur != 2 || p.d.S.R.Focus != "a3" {
+	if _, cur = p.tutorialRows(); cur != 2 || p.d.S.R.FocusID() != "a3" {
 		t.Fatal("setup did not end at the reset row")
 	}
 	h.Update(playTick{p.gen})
@@ -376,11 +376,11 @@ func TestPlayTutorialTreeKeepsSetupParentsAndResetCursor(t *testing.T) {
 		}
 	}
 	h.Update(playTick{p.gen})
-	if _, cur = p.tutorialRows(); cur != 2 || p.action != 1 || p.d.S.R.Focus != "a3" {
+	if _, cur = p.tutorialRows(); cur != 2 || p.action != 1 || p.d.S.R.FocusID() != "a3" {
 		t.Fatal("second action did not jump back to the same reset row")
 	}
 	keytest.Press(h, "l")
-	if _, cur = p.tutorialRows(); cur != 7 || p.d.S.R.Focus != "a4" {
+	if _, cur = p.tutorialRows(); cur != 7 || p.d.S.R.FocusID() != "a4" {
 		t.Fatalf("second action did not walk its children: cursor %d", cur)
 	}
 	keytest.Press(h, "[")

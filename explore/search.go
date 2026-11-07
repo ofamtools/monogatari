@@ -243,9 +243,9 @@ func (x *explorer) discover(ss *session, path []string) *node {
 // hintsAndRows reads the footer's hint rows by the key each is pressed
 // with, and the effective rows by the same.
 func hintsAndRows(r *ochazuke.Runtime) (map[string]ochazuke.Binding, map[string][]string) {
-	prefix := r.Mode.Payload.Prefix
+	prefix := r.CurrentMode().Payload.Prefix
 	hints := map[string]ochazuke.Binding{}
-	for _, b := range ochazuke.HintBindings(r, r.Focus) {
+	for _, b := range ochazuke.HintBindings(r, r.FocusID()) {
 		if k := nextKey(b, prefix); k != "" {
 			if _, ok := hints[k]; !ok {
 				hints[k] = b
@@ -253,7 +253,7 @@ func hintsAndRows(r *ochazuke.Runtime) (map[string]ochazuke.Binding, map[string]
 		}
 	}
 	offered := map[string][]string{}
-	for _, b := range r.ListBindings(r.Focus) {
+	for _, b := range r.ListBindings(r.FocusID()) {
 		if k := nextKey(b, prefix); k != "" {
 			offered[k] = append(offered[k], rowID(b))
 		}
@@ -309,11 +309,11 @@ func staticRowIDs(r *ochazuke.Runtime) []string {
 func (x *explorer) cover(ss *session, st State) {
 	r := ss.m.Runtime
 	noun := ""
-	if inst := r.Instances[r.Focus]; inst != nil {
+	if inst := r.Instances[r.FocusID()]; inst != nil {
 		noun = inst.Noun
 	}
-	x.nounMode[noun+" / "+r.Mode.Name]++
-	x.modesSeen[r.Mode.Name] = true
+	x.nounMode[noun+" / "+r.CurrentMode().Name]++
+	x.modesSeen[r.CurrentMode().Name] = true
 	for _, g := range st.Guards {
 		if name, off := strings.CutPrefix(g, "!"); off {
 			x.guardFalse[name] = true

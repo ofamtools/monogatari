@@ -98,8 +98,8 @@ func TestOpenStartsOnTheStory(t *testing.T) {
 		t.Fatalf("no story open: %s", h.idx.Status)
 	}
 	t.Cleanup(h.play.Close)
-	if view := ansi.Strip(h.View().Content); !strings.Contains(view, "b3") || h.play.d.S.R.Focus != "a2" {
-		t.Fatalf("the story is not open after its base (focus %q):\n%s", h.play.d.S.R.Focus, view)
+	if view := ansi.Strip(h.View().Content); !strings.Contains(view, "b3") || h.play.d.S.R.FocusID() != "a2" {
+		t.Fatalf("the story is not open after its base (focus %q):\n%s", h.play.d.S.R.FocusID(), view)
 	}
 	h.Update(nextPlayTick(t, cmd))
 	if h.play.at != 1 {

@@ -105,7 +105,7 @@ func (lib Library) Trim(base string, initial *Story, events []Event, t TrimSpec)
 		}
 		return nil, warn, fmt.Errorf("window: %w", err)
 	}
-	out.Expect = Expects{{Focus: d.S.R.Focus, Mode: d.S.R.Mode.Name}}
+	out.Expect = Expects{{Focus: d.S.R.FocusID(), Mode: d.S.R.CurrentMode().Name}}
 	warn = append(warn, fmt.Sprintf("window is events %d..%d; expect is the observed state, edit it to the correct one", from, to))
 	return out, warn, nil
 }

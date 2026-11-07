@@ -43,8 +43,8 @@ func TestBrowserSplitDefaultAndFocus(t *testing.T) {
 	}
 	runBrowserCommand(t, h, keytest.Press(h, "j"))
 	t.Log("second focus:\n" + screen(h))
-	if h.idx.Runtime.Focus != "s1" {
-		t.Fatal(h.idx.Runtime.Focus)
+	if h.idx.Runtime.FocusID() != "s1" {
+		t.Fatal(h.idx.Runtime.FocusID())
 	}
 	if view := ansi.Strip(h.renderPreview(60, 26)); !strings.HasPrefix(view, "Second story") || !strings.Contains(view, "fixture: empty") {
 		t.Fatalf("no second preview:\n%s", view)
@@ -70,8 +70,8 @@ func TestBrowserEnterAndReturn(t *testing.T) {
 		t.Fatal("did not step")
 	}
 	keytest.Press(h, "esc")
-	if h.play != nil || h.idx.Runtime.Focus != "s1" {
-		t.Fatalf("return lost focus: %s", h.idx.Runtime.Focus)
+	if h.play != nil || h.idx.Runtime.FocusID() != "s1" {
+		t.Fatalf("return lost focus: %s", h.idx.Runtime.FocusID())
 	}
 }
 
@@ -208,7 +208,7 @@ func TestBrowserOptOutAndFullSize(t *testing.T) {
 		t.Fatal("full-size return lost pane")
 	}
 	keytest.Press(h, "q")
-	if h.play != nil || h.idx.Runtime.Focus != "s1" {
+	if h.play != nil || h.idx.Runtime.FocusID() != "s1" {
 		t.Fatal("full-size return lost selection")
 	}
 	cmd := settlePlayerCommand(t, h, keytest.Press(h, "p"))
@@ -312,7 +312,7 @@ func TestBrowserMotionsKeepFocusVisible(t *testing.T) {
 	for _, keys := range []string{"G", "j", "ctrl+d", "ctrl+u", "gg", "k"} {
 		keytest.Press(h, keys)
 		if h.focusedStory() < 0 {
-			t.Fatalf("%s lost story focus: %s", keys, h.idx.Runtime.Focus)
+			t.Fatalf("%s lost story focus: %s", keys, h.idx.Runtime.FocusID())
 		}
 		name := lib.Stories[h.focusedStory()].Name
 		view := screen(h)

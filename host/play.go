@@ -684,7 +684,7 @@ func (h *host) openPlay(s *story.Story) tea.Cmd {
 		h.previewCancel = nil
 		h.previewBusy = false
 	}
-	here, focus := h.wantHere, r.Focus
+	here, focus := h.wantHere, r.FocusID()
 	h.starting, h.startFocus = s, focus
 	if !r.Settings().Bool("index.preview") && r.Settings().Bool("play.start-indicator") {
 		h.idx.Info = "Starting…"

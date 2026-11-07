@@ -62,7 +62,7 @@ type previewReady struct {
 }
 
 func (h *host) focusedStory() int {
-	id := h.idx.Runtime.Focus
+	id := h.idx.Runtime.FocusID()
 	if h.embedded {
 		id = h.returnFocus
 	}

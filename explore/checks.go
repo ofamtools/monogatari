@@ -47,17 +47,17 @@ func stateProblems(ss *session) []problem {
 	var out []problem
 	add := func(check, sig, detail string) { out = append(out, problem{check, check + ": " + sig, detail}) }
 	if !r.FocusInTopLevel() {
-		add(CheckFocusLevel, "focus outside the top level", fmt.Sprintf("focus %q, top modal %q, page %q", r.Focus, r.TopModal(), r.Page))
+		add(CheckFocusLevel, "focus outside the top level", fmt.Sprintf("focus %q, top modal %q, page %q", r.FocusID(), r.TopModal(), r.Page))
 	}
 	if r.Page != "" && !slices.Contains(r.Ancestry(r.BaseFocus()), r.Page) {
 		add(CheckPageFocus, "page is not an ancestor of the base focus", fmt.Sprintf("page %q, base focus %q", r.Page, r.BaseFocus()))
 	}
 	if !r.ModeKnown() {
-		add(CheckMode, "mode "+r.Mode.Name+" is not registered", fmt.Sprintf("mode %q payload %+v", r.Mode.Name, r.Mode.Payload))
+		add(CheckMode, "mode "+r.CurrentMode().Name+" is not registered", fmt.Sprintf("mode %q payload %+v", r.CurrentMode().Name, r.CurrentMode().Payload))
 	}
-	if row, list := rowOf(r, r.Focus); row {
-		if sel, ok := r.List(list).Selected(); !ok || sel.ID != r.Focus {
-			add(CheckRowSelect, "focused row is not its list's selected row", fmt.Sprintf("focus %q, list %q selects %q", r.Focus, list, sel.ID))
+	if row, list := rowOf(r, r.FocusID()); row {
+		if sel, ok := r.List(list).Selected(); !ok || sel.ID != r.FocusID() {
+			add(CheckRowSelect, "focused row is not its list's selected row", fmt.Sprintf("focus %q, list %q selects %q", r.FocusID(), list, sel.ID))
 		}
 	}
 	for _, c := range ss.s.Checks {

@@ -160,7 +160,7 @@ func TestWatchTUIReplaysAFinding(t *testing.T) {
 	if !strings.Contains(watchScreen(w), "■ done") || w.list.Len() != len(rep.Findings) {
 		t.Fatalf("done page: %d rows for %d findings:\n%s", w.list.Len(), len(rep.Findings), watchScreen(w))
 	}
-	if f := w.m.Runtime.Focus; f != "f0" {
+	if f := w.m.Runtime.FocusID(); f != "f0" {
 		t.Fatalf("focus %q, want the first finding", f)
 	}
 	keytest.Press(w, "enter")

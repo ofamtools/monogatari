@@ -264,9 +264,9 @@ func (d *Driver) Arrived() []Event {
 
 // traced plays e through play and appends what it did to Trace.
 func (d *Driver) traced(e Event, play func() error) error {
-	before := d.S.R.Mode.Name
+	before := d.S.R.CurrentMode().Name
 	err := play()
-	step := Step{Event: e, Before: before, After: d.S.R.Mode.Name}
+	step := Step{Event: e, Before: before, After: d.S.R.CurrentMode().Name}
 	for _, h := range d.S.R.History(0) {
 		if h.Seq <= d.lastSeq {
 			continue

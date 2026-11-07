@@ -400,10 +400,10 @@ func (w *watcher) refresh() {
 		w.msg = err.Error()
 	}
 	r := w.m.Runtime
-	if r.Page == "watch" && (r.Focus == "" || r.Instances[r.Focus] == nil || r.Focus == "watch") {
+	if r.Page == "watch" && (r.FocusID() == "" || r.Instances[r.FocusID()] == nil || r.FocusID() == "watch") {
 		_ = r.SetFocus("findings")
 	}
-	if r.Focus == "findings" && len(items) > 0 {
+	if r.FocusID() == "findings" && len(items) > 0 {
 		_ = r.SetFocus(items[0].ID)
 	}
 }

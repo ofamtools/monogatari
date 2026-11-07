@@ -64,8 +64,8 @@ func nextKey(row ochazuke.Binding, prefix string) string {
 func actionsOf(r *ochazuke.Runtime, sizes [][2]int) []string {
 	seen := map[string]bool{}
 	var keys []string
-	prefix := r.Mode.Payload.Prefix
-	for _, row := range r.ListBindings(r.Focus) {
+	prefix := r.CurrentMode().Payload.Prefix
+	for _, row := range r.ListBindings(r.FocusID()) {
 		if row.Unbind {
 			continue
 		}

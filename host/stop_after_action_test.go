@@ -40,8 +40,8 @@ func TestPlayStopAfterAction(t *testing.T) {
 			}
 			old := p.gen
 			_, cmd := h.Update(playTick{old})
-			if p.action != 1 || p.at != 0 || p.d.S.R.Focus != "a3" || p.auto == stop {
-				t.Fatalf("next reset: action=%d step=%d focus=%s auto=%v", p.action, p.at, p.d.S.R.Focus, p.auto)
+			if p.action != 1 || p.at != 0 || p.d.S.R.FocusID() != "a3" || p.auto == stop {
+				t.Fatalf("next reset: action=%d step=%d focus=%s auto=%v", p.action, p.at, p.d.S.R.FocusID(), p.auto)
 			}
 			if stop {
 				if cmd != nil || !strings.Contains(screen(h), "paused") {
@@ -61,7 +61,7 @@ func TestPlayStopAfterAction(t *testing.T) {
 			for range 2 {
 				h.Update(playTick{p.gen})
 			}
-			if p.auto || !p.done() || p.d.S.R.Focus != "a5" || len(p.failures()) != 0 {
+			if p.auto || !p.done() || p.d.S.R.FocusID() != "a5" || len(p.failures()) != 0 {
 				t.Fatal("final action did not finish normally")
 			}
 		})

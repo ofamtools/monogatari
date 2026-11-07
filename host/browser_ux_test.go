@@ -349,7 +349,7 @@ func TestBrowserUXPreviewFrameDimmed(t *testing.T) {
 func TestBrowserUXPreviewOffEnterHint(t *testing.T) {
 	h := browserHost(t)
 	h.idx.Runtime.Settings().Set("index.preview", false)
-	hints := ochazuke.BindingHints(h.idx.Runtime, h.idx.Runtime.Focus)
+	hints := ochazuke.BindingHints(h.idx.Runtime, h.idx.Runtime.FocusID())
 	if !strings.Contains(hints, "enter entry.open") || strings.Contains(hints, "play-here") {
 		t.Fatal(hints)
 	}
@@ -376,7 +376,7 @@ func TestBrowserUXFullsizeEscReturnsToPane(t *testing.T) {
 		t.Fatal("p does not toggle full size")
 	}
 	keytest.Press(h, "esc")
-	if h.play != nil || h.idx.Runtime.Focus != "s0" {
+	if h.play != nil || h.idx.Runtime.FocusID() != "s0" {
 		t.Fatal("second escape did not return to list")
 	}
 }
@@ -394,7 +394,7 @@ func TestBrowserUXFullsizeDirectToggle(t *testing.T) {
 		t.Fatal("pane p lost the player")
 	}
 	h.idx.Runtime.Settings().Set("index.preview", false)
-	if hints := ochazuke.BindingHints(h.idx.Runtime, h.idx.Runtime.Focus); strings.Contains(hints, "play.fullsize") {
+	if hints := ochazuke.BindingHints(h.idx.Runtime, h.idx.Runtime.FocusID()); strings.Contains(hints, "play.fullsize") {
 		t.Fatal("zoom hint shown with no pane", hints)
 	}
 }
@@ -614,7 +614,7 @@ func TestBrowserUXPlayingRowResize(t *testing.T) {
 	for _, size := range [][2]int{{120, 40}, {80, 24}, {120, 40}} {
 		h.Update(tea.WindowSizeMsg{Width: size[0], Height: size[1]})
 		view := screen(h)
-		if !strings.Contains(view, "▶ many story 39") || h.idx.Runtime.Focus != "index-player" {
+		if !strings.Contains(view, "▶ many story 39") || h.idx.Runtime.FocusID() != "index-player" {
 			t.Fatal("resize hid the playing row or moved player focus", view)
 		}
 		t.Logf("FRAME playing-%dx%d %q", size[0], size[1], view)
