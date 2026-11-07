@@ -611,9 +611,9 @@ func (t *Tool) shell() *ocli.Shell {
 
 // params declares an operation's parameters.
 func params(r *ochazuke.Runtime, name string, p map[string]ochazuke.Parameter) {
-	op := r.Operations[name]
+	op := r.Operations.At(ochazuke.Key(name))
 	op.Parameters = p
-	r.Operations[name] = op
+	r.Operations.Set(op)
 }
 
 // copyStory writes a copy of s named as into the user's stories, beside

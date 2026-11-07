@@ -2,6 +2,7 @@ package explore
 
 import (
 	"fmt"
+	"maps"
 	"runtime"
 	"slices"
 	"strings"
@@ -114,7 +115,7 @@ func search(s *Subject, b Budget, mode KeyMode, sizes [][2]int) *explorer {
 	}
 	r := ss.m.Runtime
 	x.initialPage = r.Page
-	x.ops = sortedKeys(r.Operations)
+	x.ops = sortedKeys(maps.Collect(r.Operations.Entries()))
 	x.modes = append(sortedKeys(r.Modes), r.PendingModes()...)
 	slices.Sort(x.modes)
 	x.staticRows = staticRowIDs(r)
