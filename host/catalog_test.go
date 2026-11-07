@@ -165,6 +165,9 @@ func TestCatalogMarksOnlyRecordingDeleteDestructive(t *testing.T) {
 	}
 	var got []string
 	for _, n := range doc.Nouns {
+		if strings.HasPrefix(n.Name, "ochazuke.") { // the library's own nouns are ochazuke's to mark
+			continue
+		}
 		for _, v := range n.Verbs {
 			if v.Destructive {
 				got = append(got, n.Name+"."+v.Name)

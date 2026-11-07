@@ -228,7 +228,7 @@ func TestBrowserLiveOpen(t *testing.T) {
 
 func TestBrowserSettingIsExposedByHostCLI(t *testing.T) {
 	tool, out := testTool(t)
-	if err := tool.Main([]string{"settings", "set", "index.preview", "false", "--yes"}); err != nil {
+	if err := tool.Main([]string{"setting", "set", "index.preview", "false", "--yes"}); err != nil {
 		t.Fatal(err, out.String())
 	}
 	r := ochazuke.NewRuntime()

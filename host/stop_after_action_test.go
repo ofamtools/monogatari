@@ -70,7 +70,7 @@ func TestPlayStopAfterAction(t *testing.T) {
 
 func TestPlayStopAfterActionSettings(t *testing.T) {
 	tool, out := testTool(t)
-	if err := tool.Main([]string{"settings", "set", "play.stop-after-action", "true", "--yes"}); err != nil {
+	if err := tool.Main([]string{"setting", "set", "play.stop-after-action", "true", "--yes"}); err != nil {
 		t.Fatal(err, out.String())
 	}
 	h := browserHost(t)
@@ -79,10 +79,10 @@ func TestPlayStopAfterActionSettings(t *testing.T) {
 		t.Fatal("player did not read the host CLI setting")
 	}
 	r := h.idx.Runtime
-	if _, err := r.Execute(ochazuke.Request{Noun: "ochazuke.settings", Verb: "edit"}); err != nil {
+	if _, err := r.Execute(ochazuke.Request{Noun: "ochazuke.setting", Verb: "open"}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := r.Execute(ochazuke.Request{Noun: "ochazuke.settings", Verb: "section", Args: ochazuke.Arguments{"name": "play"}}); err != nil {
+	if _, err := r.Execute(ochazuke.Request{Noun: "ochazuke.settings-section", Verb: "open", Args: ochazuke.Arguments{"section": "play"}}); err != nil {
 		t.Fatal(err)
 	}
 	if err := r.SetFocus("__settings/row/play.stop-after-action"); err != nil {
