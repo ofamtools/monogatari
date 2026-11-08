@@ -495,7 +495,7 @@ func (t *Tool) shell() *ocli.Shell {
 				out = append(out, lines(noun, rows)...)
 			}
 			return ochazuke.Done(out)
-		}, "every list's rows in one call as JSON Lines tagged by noun: "+strings.Join(catalogNouns, ", ")+" (the catalog's state)").State()
+		}, "every list's rows in one call as JSON Lines tagged by noun: "+strings.Join(catalogNouns, ", ")+" (the catalog's state)").Lists()
 	r.Define("recording").
 		Verb("list", func(c ochazuke.Ctx) ochazuke.Result { return recordingsOf(arg(c, "story")) },
 			"the history ring (newest first) then the saved recordings, of one story when named: {id: recording/REF, label, data: {ref, kind, story, started, events, path}}").Rows("recording").
