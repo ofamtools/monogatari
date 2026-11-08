@@ -252,7 +252,7 @@ type watchReplayTick struct{ gen int }
 type watcher struct {
 	run      *watchRun
 	m        *ochazuke.Model
-	list     *ochazuke.List
+	list     *ochazuke.Collection
 	findings []explore.Finding // the rows of the list
 	app      int
 	version  int

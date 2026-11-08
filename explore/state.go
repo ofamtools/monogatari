@@ -176,7 +176,7 @@ func rowOf(r *ochazuke.Runtime, id string) (bool, string) {
 }
 
 // focusedList is the list the focus is on (the list or one of its rows).
-func focusedList(r *ochazuke.Runtime) (*ochazuke.List, string) {
+func focusedList(r *ochazuke.Runtime) (*ochazuke.Collection, string) {
 	if l := r.List(r.FocusID()); l != nil {
 		return l, r.FocusID()
 	}

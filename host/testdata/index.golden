@@ -13,7 +13,7 @@
 
 
   ────────────────────────────────────────────────────────────────────────────────────────────────
-  enter entry.open · p entry.play · q app.quit · space list.mark · : palette.open · ? bindings.he…
+  enter entry.open · p entry.play · q app.quit · space collection.mark · : palette.open · ? bindi…
 
 -- width 64 --
   ◆ rows-story                                   NORMAL
@@ -30,7 +30,7 @@
 
 
   ────────────────────────────────────────────────────────────
-  enter entry.open · p entry.play · q app.quit · space list.m…
+  enter entry.open · p entry.play · q app.quit · space collec…
 
 -- width 40 --
   ◆ rows-story           NORMAL

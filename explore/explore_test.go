@@ -27,7 +27,7 @@ func buggy() (*ochazuke.Model, error) {
 		Bind("b", ochazuke.Do("item.boom")).
 		Bind("f", ochazuke.Do("item.fail")).
 		Bind("s", ochazuke.Do("mode.set", ochazuke.Arguments{"mode": "stuck"}))
-	var list *ochazuke.List
+	var list *ochazuke.Collection
 	if _, err := r.AddPage("p", "Page", func(r *ochazuke.Runtime, w, h int) ochazuke.Block {
 		return ochazuke.Text(list.View(w, h))
 	}); err != nil {

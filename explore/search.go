@@ -455,7 +455,7 @@ func (x *explorer) evalAction(ss *session, n *node, a string, count bool) []prob
 	}
 	if a == Wait && !ss.quit {
 		for _, j := range ss.m.Runtime.Jobs() {
-			if j.State != ochazuke.JobRunning {
+			if j.Status != ochazuke.JobRunning {
 				continue
 			}
 			if len(ss.blocked) == 0 {

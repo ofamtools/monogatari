@@ -139,14 +139,14 @@ func (s *Story) EventCount() int {
 // or a framework timer firing. T is milliseconds since the session started
 // (recordings only; scripts leave it 0).
 type Event struct {
-	T     int64  `json:"t,omitempty"`
-	Key   string `json:"key,omitempty"`
-	Type  string `json:"type,omitempty"`
-	Paste string `json:"paste,omitempty"`
-	Job   string `json:"job,omitempty"`   // noun.verb of the job that delivered
-	State string `json:"state,omitempty"` // done or failed
-	Tick  string `json:"tick,omitempty"`  // linger, binding, terminal (a pane frame), output (fake output line), debounce (a tree line's, a form's or a completion's pause) or segment (the status segments' next refresh, answered)
-	Note  string `json:"note,omitempty"`  // shown while this event plays
+	T      int64  `json:"t,omitempty"`
+	Key    string `json:"key,omitempty"`
+	Type   string `json:"type,omitempty"`
+	Paste  string `json:"paste,omitempty"`
+	Job    string `json:"job,omitempty"`    // noun.verb of the job that delivered
+	Status string `json:"status,omitempty"` // done or failed
+	Tick   string `json:"tick,omitempty"`   // linger, binding, terminal (a pane frame), output (fake output line), debounce (a tree line's, a form's or a completion's pause) or segment (the status segments' next refresh, answered)
+	Note   string `json:"note,omitempty"`   // shown while this event plays
 	// Restart quits the session and builds it again from the story with
 	// the same state directory (State), as a user reopening the app.
 	Restart bool `json:"restart,omitempty"`
@@ -182,7 +182,7 @@ func (e Event) String() string {
 	case e.Paste != "":
 		return fmt.Sprintf("paste %q", e.Paste)
 	case e.Job != "":
-		return "job " + e.Job + " " + e.State
+		return "job " + e.Job + " " + e.Status
 	case e.Tick != "":
 		return "tick " + e.Tick
 	case e.Restart:

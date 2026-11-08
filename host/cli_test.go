@@ -34,7 +34,7 @@ func TestVerbsRewritesTheReadmeSection(t *testing.T) {
 		t.Fatal(err)
 	}
 	data, _ := os.ReadFile(readme)
-	if want := "# rows\n\n" + marker + "\n\n" + m.Markdown() + "\n<!-- verbs:end -->\ntail\n"; string(data) != want || !strings.Contains(want, "list.move") {
+	if want := "# rows\n\n" + marker + "\n\n" + m.Markdown() + "\n<!-- verbs:end -->\ntail\n"; string(data) != want || !strings.Contains(want, "collection.move") {
 		t.Fatalf("README:\n%s\nwant:\n%s", data, want)
 	}
 }

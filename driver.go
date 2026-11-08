@@ -64,7 +64,7 @@ func Classify(ss *Session, msg tea.Msg) *Event {
 				if v.Err != nil {
 					state = ochazuke.JobFailed
 				}
-				return &Event{Job: ss.R.DisplayKey(j.Verb), State: state} // recorded by its short name
+				return &Event{Job: ss.R.DisplayKey(j.Verb), Status: state} // recorded by its short name
 			}
 		}
 	case ochazuke.JobLingerMsg:

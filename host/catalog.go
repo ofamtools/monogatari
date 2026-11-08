@@ -31,7 +31,7 @@ import (
 //	{id: "recording/1", label: "...", data: {ref: "1", story: "...", started: "...", events: 12}}
 //	{id: "fixture/demo/pages", label: "demo pages", data: {app: "demo", name: "pages", summary: "...", default: true}}
 //	{id: "application/demo", label: "demo", data: {name: "demo", summary: "...", fixtures: ["pages"], fields: ["page", "pages"], default: true}}
-//	{id: "verb/normal/list.move", label: "normal list list.move", data: {mode: "normal", noun: "list", verb: "list.move"}}
+//	{id: "verb/normal/collection.move", label: "normal collection collection.move", data: {mode: "normal", noun: "collection", verb: "collection.move"}}
 //	{id: "edge/normal/insert/input.edit", label: "normal → insert via input.edit", data: {from, to, via}}
 
 // catalogNouns are the catalog's data nouns, in state order.
@@ -330,7 +330,7 @@ func (t *Tool) shell() *ocli.Shell {
 	if err := declarePlaySettings(r); err != nil {
 		panic(err)
 	}
-	lists := map[string]*ochazuke.List{}
+	lists := map[string]*ochazuke.Collection{}
 	for _, noun := range catalogNouns {
 		var opts []ochazuke.InstanceOption
 		if noun == "story" {

@@ -66,7 +66,7 @@ func buildRows(env story.Env) (story.Built, error) {
 		return ochazuke.Done(c.Instance.Label)
 	}, "Copy row label").Mode("normal").Bind("y", ochazuke.Do("row.copy").Hide())
 	r.Define("app").Mode("normal").Bind("q", ochazuke.Do("app.quit"))
-	lists := map[string]*ochazuke.List{}
+	lists := map[string]*ochazuke.Collection{}
 	if _, err := r.AddPage("main", "Main", func(_ *ochazuke.Runtime, w, h int) ochazuke.Block {
 		var b strings.Builder
 		for _, l := range seed.Lists {

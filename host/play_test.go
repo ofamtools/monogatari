@@ -93,7 +93,7 @@ func TestPlayStepsAndChecksTheScript(t *testing.T) {
 	if p.at != 1 || p.d.S.R.FocusID() != "a2" {
 		t.Fatalf("after one step at %d, focus %q", p.at, p.d.S.R.FocusID())
 	}
-	if !strings.Contains(screen(h), "▸ j") || !strings.Contains(screen(h), "list.move") {
+	if !strings.Contains(screen(h), "▸ j") || !strings.Contains(screen(h), "collection.move") {
 		t.Fatalf("the played row is not marked with what it ran:\n%s", screen(h))
 	}
 	keytest.Press(h, "l")
